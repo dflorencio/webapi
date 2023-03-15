@@ -21,12 +21,10 @@ app.MapGet("/AddHeader", (HttpResponse response) => {
 
 
 app.MapPost("/produto", (Produto produto) => {
-    return produto.Codigo + " - " + produto.Nome;
+    ProdutoRepositorio.Add(produto);
 });
 
-app.MapPost("/livro", (Livro livro) => {
-    return livro.descricao ;
-});
+
 
 // Via parametro 
 app.MapGet("/produto" , ([FromQuery]string dataInicial, [FromQuery]string dataFinal) => {
@@ -34,8 +32,8 @@ app.MapGet("/produto" , ([FromQuery]string dataInicial, [FromQuery]string dataFi
     });
 
 
-app.MapGet("/produto/{code}", ([FromRoute]string code) => {
-    return code;
+app.MapGet("/produto/{code}", ([FromRoute]string codigo) => {
+    var produto = ProdutoRepositorio.GetBy(codigo);
 });
    
 app.MapGet("/getproduto",(HttpRequest request) => {
@@ -54,10 +52,20 @@ public class Produto {
 }
 
 
-public class Livro
- {
-    public string imgCapa { get; set; }
-    public string descricao { get; set; }
-    public string  titulo { get; set; }
-   
+
+
+
+ public static class ProdutoRepositorio {
+    public static List<Produto> Produtos { get; set; }
+
+    public static  void Add(Produto produto) {
+        if(Produtos == null)
+            Produtos = new List<Produto>();
+
+        Produtos.Add(produto);    
+    }
+
+    public static Produto GetBy(string codigo) {
+        return Produtos.First(p =>p.Codigo ==codigo);
+    }
  }
