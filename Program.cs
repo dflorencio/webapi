@@ -22,19 +22,38 @@ app.MapGet("/AddHeader", (HttpResponse response) => {
 
 app.MapPost("/produto", (Produto produto) => {
     ProdutoRepositorio.Add(produto);
+    return Results.Created("/produto/" + produto.Codigo, produto.Codigo);
 });
 
 
+app.MapGet("/produto/{codigo}", ([FromRoute]string codigo) => {
+    var produto = ProdutoRepositorio.GetBy(codigo);
+    if(produto != null)
+        return Results.Ok(produto);
+    return Results.NotFound();
+});
 
+
+app.MapPut("/produto", (Produto produto) =>{
+    var produtoSalvo = ProdutoRepositorio.GetBy(produto.Codigo);
+    produtoSalvo.Nome = produto.Nome;
+    return Results.Ok();
+});
+
+
+app.MapDelete("/produto/{codigo}", ([FromRoute]string codigo) =>{
+    var produto = ProdutoRepositorio.GetBy(codigo);
+    ProdutoRepositorio.Remove(produto);
+    return Results.Ok();
+});
 // Via parametro 
 app.MapGet("/produto" , ([FromQuery]string dataInicial, [FromQuery]string dataFinal) => {
     return dataInicial + " - " + dataFinal;    
     });
 
 
-app.MapGet("/produto/{code}", ([FromRoute]string codigo) => {
-    var produto = ProdutoRepositorio.GetBy(codigo);
-});
+
+
    
 app.MapGet("/getproduto",(HttpRequest request) => {
     return request.Headers["produto-codigo"].ToString();
@@ -66,6 +85,9 @@ public class Produto {
     }
 
     public static Produto GetBy(string codigo) {
-        return Produtos.First(p =>p.Codigo ==codigo);
+        return Produtos.FirstOrDefault(p =>p.Codigo ==codigo);
+    }
+    public static void Remove(Produto produto){
+        Produtos.Remove(produto);
     }
  }
