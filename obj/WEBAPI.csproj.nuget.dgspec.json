@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\CSharp\\WEBAPI\\WEBAPI.csproj": {}
+    "C:\\api\\webapi\\WEBAPI.csproj": {}
   },
   "projects": {
-    "C:\\CSharp\\WEBAPI\\WEBAPI.csproj": {
+    "C:\\api\\webapi\\WEBAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\CSharp\\WEBAPI\\WEBAPI.csproj",
+        "projectUniqueName": "C:\\api\\webapi\\WEBAPI.csproj",
         "projectName": "WEBAPI",
-        "projectPath": "C:\\CSharp\\WEBAPI\\WEBAPI.csproj",
-        "packagesPath": "C:\\Users\\BITFARMA\\.nuget\\packages\\",
-        "outputPath": "C:\\CSharp\\WEBAPI\\obj\\",
+        "projectPath": "C:\\api\\webapi\\WEBAPI.csproj",
+        "packagesPath": "C:\\Users\\davi_\\.nuget\\packages\\",
+        "outputPath": "C:\\api\\webapi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\BITFARMA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\davi_\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -39,6 +39,22 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -58,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
