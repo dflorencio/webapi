@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using webapi.Data;
 
 #nullable disable
 
 namespace WEBAPI.Migrations
 {
-    [DbContext(typeof(AplicacaoDbContext))]
-    partial class AplicacaoDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AplicacaoDBContext))]
+    partial class AplicacaoDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +21,7 @@ namespace WEBAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Categoria", b =>
+            modelBuilder.Entity("webapi.Models.Categoria", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -29,15 +30,14 @@ namespace WEBAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Categoria");
+                    b.ToTable("Categorias");
                 });
 
-            modelBuilder.Entity("Produto", b =>
+            modelBuilder.Entity("webapi.Models.Produto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace WEBAPI.Migrations
                     b.ToTable("Produtos");
                 });
 
-            modelBuilder.Entity("Tag", b =>
+            modelBuilder.Entity("webapi.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +78,6 @@ namespace WEBAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProdutoId")
@@ -88,12 +87,12 @@ namespace WEBAPI.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Produto", b =>
+            modelBuilder.Entity("webapi.Models.Produto", b =>
                 {
-                    b.HasOne("Categoria", "Categoria")
+                    b.HasOne("webapi.Models.Categoria", "Categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -102,16 +101,16 @@ namespace WEBAPI.Migrations
                     b.Navigation("Categoria");
                 });
 
-            modelBuilder.Entity("Tag", b =>
+            modelBuilder.Entity("webapi.Models.Tag", b =>
                 {
-                    b.HasOne("Produto", null)
+                    b.HasOne("webapi.Models.Produto", null)
                         .WithMany("Tags")
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Produto", b =>
+            modelBuilder.Entity("webapi.Models.Produto", b =>
                 {
                     b.Navigation("Tags");
                 });

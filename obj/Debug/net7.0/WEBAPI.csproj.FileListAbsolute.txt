@@ -50,7 +50,6 @@ C:\api\webapi\obj\Debug\net7.0\refint\WEBAPI.dll
 C:\api\webapi\obj\Debug\net7.0\WEBAPI.pdb
 C:\api\webapi\obj\Debug\net7.0\WEBAPI.genruntimeconfig.cache
 C:\api\webapi\obj\Debug\net7.0\ref\WEBAPI.dll
-C:\api\webapi\bin\Debug\net7.0\appsettings.Staging.json
 C:\api\webapi\bin\Debug\net7.0\Azure.Core.dll
 C:\api\webapi\bin\Debug\net7.0\Azure.Identity.dll
 C:\api\webapi\bin\Debug\net7.0\Humanizer.dll

@@ -1,4 +1,6 @@
 
+using webapi.Models;
+
 public static class ProdutoRepositorio
 {
     public static List<Produto> Produtos { get; set; } = Produtos = new List<Produto>();

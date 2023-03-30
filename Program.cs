@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using webapi.Data;
+using webapi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSqlServer<AplicacaoDbContext>(builder.Configuration["Database:SqlServer"]);
+builder.Services.AddSqlServer<AplicacaoDBContext>(builder.Configuration["ConnectionStrings:host"]);
+
 
 var app = builder.Build();
 var configuration = app.Configuration;
@@ -26,12 +29,20 @@ app.MapGet("/AddHeader", (HttpResponse response) =>
     };
 });
 
-app.MapPost("/produto", (Produto produto) =>
+/*app.MapPost("/produto", (ProdutoRequest produtoRequest, AplicacaoDbContext context) =>
 {
-    ProdutoRepositorio.Add(produto);
-    return Results.Created("/produto/" + produto.Codigo, produto.Codigo);
+    /* var categoria = context.Categoria.Where(c => c.ID == produtoRequest.CategoriaId).First();
+     var produto = new Produto
+     {
+         Codigo = produtoRequest.Codigo,
+         Nome = produtoRequest.Nome,
+         Descricao = produtoRequest.Descricao,
+         Categoria = categoria
+     };
+     context.Produtos.Add(produto);
+     return Results.Created($"/produto/ + {produto.Id}", produto.Id);
 });
-
+*/
 
 app.MapGet("/produto/{codigo}", ([FromRoute] string codigo) =>
 {
