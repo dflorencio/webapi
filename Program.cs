@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.Models;
 
@@ -29,41 +30,70 @@ app.MapGet("/AddHeader", (HttpResponse response) =>
     };
 });
 
-/*app.MapPost("/produto", (ProdutoRequest produtoRequest, AplicacaoDbContext context) =>
+app.MapPost("/produto", (ProdutoRequest produtoRequest, AplicacaoDBContext context) =>
 {
-    /* var categoria = context.Categoria.Where(c => c.ID == produtoRequest.CategoriaId).First();
-     var produto = new Produto
-     {
-         Codigo = produtoRequest.Codigo,
-         Nome = produtoRequest.Nome,
-         Descricao = produtoRequest.Descricao,
-         Categoria = categoria
-     };
-     context.Produtos.Add(produto);
-     return Results.Created($"/produto/ + {produto.Id}", produto.Id);
-});
-*/
+    var categoria = context.Categorias.Where(c => c.ID == produtoRequest.CategoriaId).First();
+    var produto = new Produto
+    {
+        Codigo = produtoRequest.Codigo,
+        Nome = produtoRequest.Nome,
+        Descricao = produtoRequest.Descricao,
+        Categoria = categoria
+    };
+    if (produtoRequest.Tags != null)
+    {
+        produto.Tags = new List<Tag>();
+        foreach (var item in produtoRequest.Tags)
+        {
+            produto.Tags.Add(new Tag { Nome = item });
+        }
 
-app.MapGet("/produto/{codigo}", ([FromRoute] string codigo) =>
+    }
+    context.Produtos.Add(produto);
+    context.SaveChanges();
+    return Results.Created($"/produto/ + {produto.Id}", produto.Id);
+});
+
+
+app.MapGet("/produto/{id}", ([FromRoute] int id, AplicacaoDBContext context) =>
 {
-    var produto = ProdutoRepositorio.GetBy(codigo);
+    var produto = context.Produtos
+    .Include(p => p.Categoria)
+    .Include(p => p.Tags)
+    .Where(p => p.Id == id).First();
+
     if (produto != null)
         return Results.Ok(produto);
     return Results.NotFound();
 });
 
-app.MapPut("/produto", (Produto produto) =>
+app.MapPut("/produto/{id}", ([FromRoute] int id, ProdutoRequest produtoReqest, AplicacaoDBContext context) =>
 {
-    var produtoSalvo = ProdutoRepositorio.GetBy(produto.Codigo);
-    produtoSalvo.Nome = produto.Nome;
+    var produto = context.Produtos
+    .Include(p => p.Tags)
+    .Where(p => p.Id == id).First();
+    var categoria = context.Categorias.Where(c => c.ID == produtoReqest.CategoriaId).First();
+
+    produto.Codigo = produtoReqest.Codigo;
+    produto.Nome = produtoReqest.Nome;
+    produto.Descricao = produtoReqest.Descricao;
+    produto.Categoria = categoria;
+    produto.Tags = new List<Tag>();
+    if (produtoReqest.Tags != null)
+        foreach (var item in produtoReqest.Tags)
+        {
+            produto.Tags.Add(new Tag { Nome = item });
+        }
+    context.SaveChanges();
     return Results.Ok();
 });
 
 
-app.MapDelete("/produto/{codigo}", ([FromRoute] string codigo) =>
+app.MapDelete("/produto/{id}", ([FromRoute] int id, AplicacaoDBContext context) =>
 {
-    var produto = ProdutoRepositorio.GetBy(codigo);
-    ProdutoRepositorio.Remove(produto);
+    var produto = context.Produtos.Where(p => p.Id == id).First();
+    context.Produtos.Remove(produto);
+    context.SaveChanges();
     return Results.Ok();
 });
 // Via parametro 
