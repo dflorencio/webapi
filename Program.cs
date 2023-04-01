@@ -12,23 +12,10 @@ var configuration = app.Configuration;
 ProdutoRepositorio.Init(configuration);
 
 
-app.MapGet("/", () => "Hello World!");
 
-app.MapPost("/", () => new
-{
-    Nome = "Davi FLorencio;",
-    Idade = 31
-});
 
-app.MapGet("/AddHeader", (HttpResponse response) =>
-{
-    response.Headers.Add("Teste", "Davi Florencio");
-    return new
-    {
-        Nome = "Davi FLorencio",
-        Idade = 31
-    };
-});
+
+
 
 app.MapPost("/produto", (ProdutoRequest produtoRequest, AplicacaoDBContext context) =>
 {
@@ -40,6 +27,7 @@ app.MapPost("/produto", (ProdutoRequest produtoRequest, AplicacaoDBContext conte
         Descricao = produtoRequest.Descricao,
         Categoria = categoria
     };
+
     if (produtoRequest.Tags != null)
     {
         produto.Tags = new List<Tag>();
@@ -47,7 +35,6 @@ app.MapPost("/produto", (ProdutoRequest produtoRequest, AplicacaoDBContext conte
         {
             produto.Tags.Add(new Tag { Nome = item });
         }
-
     }
     context.Produtos.Add(produto);
     context.SaveChanges();
@@ -64,6 +51,15 @@ app.MapGet("/produto/{id}", ([FromRoute] int id, AplicacaoDBContext context) =>
 
     if (produto != null)
         return Results.Ok(produto);
+    return Results.NotFound();
+});
+
+app.MapGet("/produto/", (AplicacaoDBContext context) =>
+{
+    var produtos = context.Produtos.ToList();
+
+    if (produtos != null)
+        return Results.Ok(produtos);
     return Results.NotFound();
 });
 
@@ -88,7 +84,6 @@ app.MapPut("/produto/{id}", ([FromRoute] int id, ProdutoRequest produtoReqest, A
     return Results.Ok();
 });
 
-
 app.MapDelete("/produto/{id}", ([FromRoute] int id, AplicacaoDBContext context) =>
 {
     var produto = context.Produtos.Where(p => p.Id == id).First();
@@ -97,21 +92,5 @@ app.MapDelete("/produto/{id}", ([FromRoute] int id, AplicacaoDBContext context) 
     return Results.Ok();
 });
 // Via parametro 
-app.MapGet("/produto", ([FromQuery] string dataInicial, [FromQuery] string dataFinal) =>
-{
-    return dataInicial + " - " + dataFinal;
-});
 
-app.MapGet("/getproduto", (HttpRequest request) =>
-{
-    return request.Headers["produto-codigo"].ToString();
-});
-
-if (app.Environment.IsStaging())
-{
-    app.MapGet("/configuration/database", (IConfiguration configuration) =>
-    {
-        return Results.Ok($"{configuration["database:Connection"]} / {configuration["database:port"]}");
-    });
-};
 app.Run();
