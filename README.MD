@@ -15,15 +15,15 @@ Este projeto tem como objetivo apresentar uma implementação de uma API RESTful
 ### GET  https://localhost:3000/produto
 Retorna uma lista com todos os produtos cadastrados.
 
-### GET  https://localhost:3000/produto{id}
+### GET  https://localhost:3000/produto/{id}
 Retorna um produto específico com base no ID informado.
 
 ### POST  https://localhost:3000/produto
 Cadastra um novo produto no banco de dados.
 
-### PUT  https://localhost:3000/produto/id
+### PUT  https://localhost:3000/produto/{id}
 Atualiza as informações de um produto específico com base no ID informado.
 
-### DELETE  https://localhost:3000/produto/id
+### DELETE  https://localhost:3000/produto/{id}
 Remove um produto específico com base no ID informado.
 
