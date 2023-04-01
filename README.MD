@@ -3,11 +3,11 @@
 Este projeto tem como objetivo apresentar uma implementação de uma API RESTful utilizando o framework .NET e o Entity Framework para persistência de dados em um banco de dados SQL Server. A API foi desenvolvida em C# e oferece as operações CRUD (Create, Read, Update, Delete) para a entidade "Produto".
 
 ## Tecnologias utilizadas
-Visual Studio Code
-.NET Framework 4.8
-C#
-Entity Framework
-SQL Server
+ * Visual Studio Code
+* .NET 7.0
+ * C#
+* Entity Framework
+* MS SQL Server
 
 
 ##  Endpoints disponíveis
